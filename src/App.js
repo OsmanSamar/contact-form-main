@@ -17,6 +17,7 @@ function App() {
     message: " ",
     check: "",
   });
+
   const [successMessage, setSuccessMessage] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -24,10 +25,63 @@ function App() {
     setErrorMessage((prev) => ({ ...prev, [field]: err }));
   };
 
+  const handleInputChange = (e, field) => {
+    const value = e.target.type === "check" ? e.target.checked : e.target.value;
+
+    switch (field) {
+      case "fname":
+        setFname(value);
+        if (value !== "") {
+          handleError("", "fname");
+        }
+        break;
+
+      case "lname":
+        setLname(value);
+        if (value !== "") {
+          handleError("", "lname");
+        }
+        break;
+
+      case "email":
+        setEmail(value);
+        if (emailValidation(value).isValid) {
+          handleError("", "email");
+        }
+        break;
+
+      case "qtype":
+        setQtype(value);
+        if (value !== "") {
+          handleError("", "qtype");
+        }
+        break;
+
+      case "message":
+        setMessage(value);
+        if (value !== "") {
+          handleError("", "message");
+        }
+        break;
+
+      case "check":
+        setCheck(value);
+        if (value !== "") {
+          handleError("", "check");
+        }
+        break;
+      default:
+        break;
+    }
+    setFormSubmitted(false); // Reset form submission state when typing
+  };
+
   const validate = async (e) => {
     // Prevent form submission
     e.preventDefault();
+
     setFormSubmitted(true);
+
     let isValid = true;
 
     // Existing validation logic
@@ -81,6 +135,7 @@ function App() {
     if (isValid) {
       // alert("Message Sent! ");
       setSuccessMessage("Message Sent!");
+      // Clear the form and reset form submission state
       setFname("");
       setLname("");
       setEmail("");
@@ -90,6 +145,7 @@ function App() {
       setFormSubmitted(false);
     }
   };
+
   const handleCloseSuccessMessage = () => {
     setSuccessMessage("");
   };
@@ -114,7 +170,8 @@ function App() {
               name="fname"
               placeholder="Samar"
               value={fname}
-              onChange={(e) => setFname(e.target.value)}
+              // onChange={(e) => setFname(e.target.value)}
+              onChange={(e) => handleInputChange(e, "fname")}
               className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5 px-4 py-2 border rounded-lg
                focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none ${
                  formSubmitted && errorMessage.fname
@@ -139,7 +196,8 @@ function App() {
               name="lname"
               placeholder="Osman"
               value={lname}
-              onChange={(e) => setLname(e.target.value)}
+              // onChange={(e) => setLname(e.target.value)}
+              onChange={(e) => handleInputChange(e, "lname")}
               className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5 px-4 py-2 border rounded-lg
                focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none 
                ${
@@ -168,7 +226,8 @@ function App() {
             placeholder="abc@gmail.com"
             value={email}
             required
-            onChange={(e) => setEmail(e.target.value)}
+            // onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleInputChange(e, "email")}
             className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
              px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
               ${
@@ -210,7 +269,8 @@ function App() {
                   name="qtype"
                   value="General Enquiry"
                   checked={qtype === "General Enquiry"}
-                  onChange={(e) => setQtype(e.target.value)}
+                  // onChange={(e) => setQtype(e.target.value)}
+                  onChange={(e) => handleInputChange(e, "qtype")}
                   className="form-radio h-4 w-4 text-green-500"
                 />
               </div>
@@ -234,7 +294,8 @@ function App() {
                 name="qtype"
                 value="Support Request"
                 checked={qtype === "Support Request"}
-                onChange={(e) => setQtype(e.target.value)}
+                // onChange={(e) => setQtype(e.target.value)}
+                onChange={(e) => handleInputChange(e, "qtype")}
                 className="form-radio h-4 w-4 text-green-500"
               />
             </div>
@@ -257,7 +318,8 @@ function App() {
             rows="6"
             name="message"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            // onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => handleInputChange(e, "message")}
             className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
              px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
               ${
@@ -283,7 +345,8 @@ function App() {
               name="check"
               value="Begin Contacted"
               checked={check === "Begin Contacted"}
-              onChange={(e) => setCheck(e.target.value)}
+              // onChange={(e) => setCheck(e.target.value)}
+              onChange={(e) => handleInputChange(e, "check")}
             />
             <span>
               I consent to being contacted by the team
