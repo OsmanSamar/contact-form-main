@@ -18,6 +18,7 @@ function App() {
     check: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleError = (err, field) => {
     setErrorMessage((prev) => ({ ...prev, [field]: err }));
@@ -26,16 +27,18 @@ function App() {
   const validate = async (e) => {
     // Prevent form submission
     e.preventDefault();
+    setFormSubmitted(true);
     let isValid = true;
 
-    if (fname === "") {
+    // Existing validation logic
+    if (!fname) {
       handleError("This field is required", "fname");
       isValid = false;
     } else {
       handleError("", "fname");
     }
 
-    if (lname === "") {
+    if (!lname) {
       handleError("This field is required", "lname");
       isValid = false;
     } else {
@@ -84,6 +87,7 @@ function App() {
       setQtype("");
       setMessage("");
       setCheck("");
+      setFormSubmitted(false);
     }
   };
   const handleCloseSuccessMessage = () => {
@@ -91,7 +95,7 @@ function App() {
   };
 
   return (
-    <div className="py-2 my-4 px-6 mx-5 font-Karla rounded-md  bg-white  md:mx-auto max-w-screen-sm  md:px-10">
+    <div className="py-2 my-4 px-6 mx-5 font-Karla rounded-md  bg-white  md:mx-auto max-w-screen-sm md:my-32 md:px-10">
       <h2 className="mt-6 mb-4 text-3xl font-Karla text-left text-green-900">
         Contact Us
       </h2>
@@ -113,7 +117,9 @@ function App() {
               onChange={(e) => setFname(e.target.value)}
               className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5 px-4 py-2 border rounded-lg
                focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none ${
-                 errorMessage.fname ? "border-red-500" : "border-gray-300"
+                 formSubmitted && errorMessage.fname
+                   ? "border-red-500"
+                   : "border-gray-300"
                }`}
             />
             {errorMessage.fname && (
@@ -135,11 +141,13 @@ function App() {
               value={lname}
               onChange={(e) => setLname(e.target.value)}
               className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5 px-4 py-2 border rounded-lg
-               focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none ${
-                 errorMessage.fname ? "border-red-500" : "border-gray-300"
+               focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none 
+               ${
+                 formSubmitted && errorMessage.lname
+                   ? "border-red-500"
+                   : "border-gray-300"
                }`}
             />
-
             {errorMessage.lname && (
               <p className="text-red-500">{errorMessage.lname}</p>
             )}
@@ -163,7 +171,11 @@ function App() {
             onChange={(e) => setEmail(e.target.value)}
             className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
              px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
-              ${errorMessage.fname ? "border-red-500" : "border-gray-300"}`}
+              ${
+                formSubmitted && errorMessage.email
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
           />
           {errorMessage.email && (
             <p className="text-red-500">{errorMessage.email}</p>
@@ -248,7 +260,11 @@ function App() {
             onChange={(e) => setMessage(e.target.value)}
             className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
              px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
-              ${errorMessage.fname ? "border-red-500" : "border-gray-300"}`}
+              ${
+                formSubmitted && errorMessage.message
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
             placeholder="Query/Suggestion..."
             // required
           />
@@ -262,7 +278,7 @@ function App() {
           <label className="flex items-center ">
             <input
               className="mr-2 focus:ring-1
-               focus:ring-green-200 focus:border-green-500 hover:border-green-500 appearance checked:bg-blue-500  "
+               focus:ring-green-200 focus:border-green-500 hover:border-green-500 appearance  "
               type="checkbox"
               name="check"
               value="Begin Contacted"
