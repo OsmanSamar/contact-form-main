@@ -1,16 +1,102 @@
-import React from "react";
+import React, { useState } from "react";
+import { emailValidation } from "./Validation";
+import { FaCheckCircle } from "react-icons/fa";
 
 function App() {
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [qtype, setQtype] = useState("");
+  const [message, setMessage] = useState("");
+  const [check, setCheck] = useState("");
+  const [errorMessage, setErrorMessage] = useState({
+    fname: "",
+    lname: " ",
+    email: " ",
+    qtype: "",
+    message: " ",
+    check: "",
+  });
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleError = (err, field) => {
+    setErrorMessage((prev) => ({ ...prev, [field]: err }));
+  };
+
+  const validate = async (e) => {
+    // Prevent form submission
+    e.preventDefault();
+    let isValid = true;
+
+    if (fname === "") {
+      handleError("This field is required", "fname");
+      isValid = false;
+    } else {
+      handleError("", "fname");
+    }
+
+    if (lname === "") {
+      handleError("This field is required", "lname");
+      isValid = false;
+    } else {
+      handleError("", "lname");
+    }
+
+    if (!email) {
+      handleError("Please enter email address", "email");
+      isValid = false;
+    } else if (!emailValidation(email).isValid) {
+      handleError("Please enter a vaild email address", "email");
+      isValid = false;
+    } else {
+      handleError("", "email");
+    }
+
+    if (!qtype) {
+      handleError("Please select a query type", "qtype");
+      isValid = false;
+    } else {
+      handleError("", "qtype");
+    }
+
+    if (!message) {
+      handleError("This field is required", "message");
+      isValid = false;
+    } else {
+      handleError("", "message");
+    }
+
+    if (!check) {
+      handleError(
+        "To submit this form, please consent to being contacted ",
+        "check"
+      );
+      isValid = false;
+    } else {
+      handleError("", "check");
+    }
+    if (isValid) {
+      // alert("Message Sent! ");
+      setSuccessMessage("Message Sent!");
+      setFname("");
+      setLname("");
+      setEmail("");
+      setQtype("");
+      setMessage("");
+      setCheck("");
+    }
+  };
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessage("");
+  };
+
   return (
-    <div className="py-2 my-4 px-6 mx-5 font-Karla rounded-md  bg-white md:mx-auto max-w-screen-sm  md:px-10">
-      <h2
-        className="mt-10 mb-4 text-3xl font-Karla   
-                           text-left text-green-900"
-      >
+    <div className="py-2 my-4 px-6 mx-5 font-Karla rounded-md  bg-white  md:mx-auto max-w-screen-sm  md:px-10">
+      <h2 className="mt-6 mb-4 text-3xl font-Karla text-left text-green-900">
         Contact Us
       </h2>
 
-      <form>
+      <form onSubmit={validate}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label
@@ -21,16 +107,22 @@ function App() {
             </label>
             <input
               type="text"
-              name="first-name"
-              className="shadow-sm bg-gray-50 border hover:border-green-500
-                       border-gray-300 text-gray-900  cursor-pointer text-sm rounded-lg block w-full p-2.5"
+              name="fname"
               placeholder="Samar"
-              required
+              value={fname}
+              onChange={(e) => setFname(e.target.value)}
+              className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5 px-4 py-2 border rounded-lg
+               focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none ${
+                 errorMessage.fname ? "border-red-500" : "border-gray-300"
+               }`}
             />
+            {errorMessage.fname && (
+              <p className="text-red-500">{errorMessage.fname}</p>
+            )}
           </div>
           <div>
             <label
-              for="firstName"
+              for="lastName"
               className="block my-2 text-left text-sm  
                          font-medium text-text-mediumgrey"
             >
@@ -38,12 +130,19 @@ function App() {
             </label>
             <input
               type="text"
-              name="last-name"
-              className="shadow-sm bg-gray-50 border  
-                  border-gray-300 hover:border-green-500 text-gray-900  
-                   cursor-pointer   text-sm rounded-lg block w-full p-2.5"
+              name="lname"
               placeholder="Osman"
+              value={lname}
+              onChange={(e) => setLname(e.target.value)}
+              className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5 px-4 py-2 border rounded-lg
+               focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none ${
+                 errorMessage.fname ? "border-red-500" : "border-gray-300"
+               }`}
             />
+
+            {errorMessage.lname && (
+              <p className="text-red-500">{errorMessage.lname}</p>
+            )}
           </div>
         </div>
         {/* Email Address */}
@@ -58,14 +157,19 @@ function App() {
           <input
             type="email"
             name="email"
-            className="shadow-sm bg-gray-50 border  
-                       border-gray-300 hover:border-green-500 text-gray-900  
-                       cursor-pointer text-sm rounded-lg block w-full p-2.5"
             placeholder="abc@gmail.com"
+            value={email}
             required
+            onChange={(e) => setEmail(e.target.value)}
+            className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
+             px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
+              ${errorMessage.fname ? "border-red-500" : "border-gray-300"}`}
           />
+          {errorMessage.email && (
+            <p className="text-red-500">{errorMessage.email}</p>
+          )}
         </div>
-        {/* Query Type */}
+        {/* Query Type generalEnquiry */}
         <div
           className="grid grid-cols-1 sm
          gap-4 md:grid-cols-2"
@@ -73,8 +177,7 @@ function App() {
           <div className="relative">
             <label
               for="Query Type"
-              className="block my-2 text-left  
-                       text-sm font-medium text-mediumgrey"
+              className="block my-2 text-left text-sm font-medium text-mediumgrey"
             >
               Query Type<span class="text-green-500 ml-1">*</span>
             </label>
@@ -84,71 +187,97 @@ function App() {
                 type="text"
                 id="generalEnquiry"
                 name="queryType"
-                className=" pl-10 shadow-sm bg-gray-50 border hover:border-green-500 focus:bg-green-100
-                       border-gray-300 text-gray-900  cursor-pointer text-sm rounded-lg block w-full p-2.5"
+                className=" bg-gray-50  text-gray-900 text-md   cursor-pointer 
+              block w-full p-2.5 px-10 py-2 border rounded-lg focus:ring-1
+               focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none"
                 placeholder="General Enquiry"
-                required
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <input
                   type="radio"
-                  name="queryType"
-                  id="generalEnquiryRadio"
+                  name="qtype"
+                  value="General Enquiry"
+                  checked={qtype === "General Enquiry"}
+                  onChange={(e) => setQtype(e.target.value)}
                   className="form-radio h-4 w-4 text-green-500"
                 />
               </div>
             </div>
           </div>
-
+          {/* Query Type supportRequest */}
           <div className="relative">
             <input
               type="text"
               id="supportRequest"
               name="queryType"
-              className=" my-1 pl-10  shadow-sm bg-gray-50 border hover:border-green-500 focus:bg-green-100 focus:border-green-500
-                       border-gray-300 text-gray-900  cursor-pointer text-sm rounded-lg block w-full p-2.5 md:my-9 "
+              className="   bg-gray-50  text-gray-900 text-md   cursor-pointer 
+              block w-full p-2.5 px-10 py-2 border rounded-lg focus:ring-1
+               focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none  md:my-9"
               placeholder="Support Request"
-              required
             />
 
             <div className="absolute inset-y-0 left-0 flex items-center pl-3">
               <input
                 type="radio"
-                name="queryType"
-                id="generalEnquiryRadio"
+                name="qtype"
+                value="Support Request"
+                checked={qtype === "Support Request"}
+                onChange={(e) => setQtype(e.target.value)}
                 className="form-radio h-4 w-4 text-green-500"
               />
             </div>
           </div>
+
+          {errorMessage.qtype && (
+            <p className="text-red-500">{errorMessage.qtype}</p>
+          )}
         </div>
+        {/* End of Query Type */}
         {/* Message */}
         <div className="my-4">
           <label
             for="message"
-            className="block my-2 text-left  
-                     text-sm font-medium text-mediumgrey  "
+            className="block my-2 text-left text-sm font-medium text-mediumgrey  "
           >
             Message<span class="text-green-500 ml-1">*</span>
           </label>
           <textarea
             rows="6"
             name="message"
-            className="block p-2.5 w-full text-sm  
-                       text-gray-900 bg-gray-50 rounded-lg  
-                        cursor-pointer shadow-sm border border-gray-300 hover:border-green-500 "
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
+             px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
+              ${errorMessage.fname ? "border-red-500" : "border-gray-300"}`}
             placeholder="Query/Suggestion..."
+            // required
           />
+          {errorMessage.message && (
+            <p className="text-red-500">{errorMessage.message}</p>
+          )}
         </div>
-        <div className="flex  justify-between mt-5 py-3 items-center text-sm text-mediumgrey ">
-          <label className="flex items-center ">
-            <input className="mr-2" type="checkbox" />
 
+        {/* Begin Contacted Checkbox */}
+        <div className="flex  justify-between mt-5 py-3 items-center text-sm text-mediumgrey  ">
+          <label className="flex items-center ">
+            <input
+              className="mr-2 focus:ring-1
+               focus:ring-green-200 focus:border-green-500 hover:border-green-500 appearance checked:bg-blue-500  "
+              type="checkbox"
+              name="check"
+              value="Begin Contacted"
+              checked={check === "Begin Contacted"}
+              onChange={(e) => setCheck(e.target.value)}
+            />
             <span>
               I consent to being contacted by the team
               <span className="text-green-500 ml-1 ">*</span>
             </span>
           </label>
         </div>
+        {errorMessage.check && (
+          <p className="text-red-500">{errorMessage.check}</p>
+        )}
         {/* Submit */}
         <button
           type="submit"
@@ -159,6 +288,28 @@ function App() {
         >
           Submit
         </button>
+        {/* Success Message */}
+        {successMessage && (
+          <div className="fixed top-0 left-0  w-full h-full flex items-center justify-center bg-black bg-opacity-50 ">
+            <div className="bg-white p-6 m-6  rounded-lg  ">
+              <div className=" flex items-center space-x-2 mb-4">
+                <FaCheckCircle className="text-green-500" />
+                <p className="text-lg font-semibold ">{successMessage}</p>
+              </div>
+              <p className="text-lg font-semibold mb-4">
+                Thanks for completing the form. we'll be in touch soon!
+              </p>
+              <div className="flex justify-end">
+                <button
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                  onClick={handleCloseSuccessMessage}
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );
