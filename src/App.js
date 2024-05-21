@@ -260,7 +260,7 @@ function App() {
                 name="queryType"
                 className=" bg-gray-50  text-gray-900 text-md   cursor-pointer 
               block w-full p-2.5 px-10 py-2 border rounded-lg focus:ring-1
-               focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none"
+               focus:ring-green-200 focus:border-green-500  hover:border-green-500 outline-none"
                 placeholder="General Enquiry"
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -271,7 +271,7 @@ function App() {
                   checked={qtype === "General Enquiry"}
                   // onChange={(e) => setQtype(e.target.value)}
                   onChange={(e) => handleInputChange(e, "qtype")}
-                  className="form-radio h-4 w-4 text-green-500"
+                  className="form-radio h-4 w-4 text-green-500 accent-green-600 "
                 />
               </div>
             </div>
@@ -296,7 +296,7 @@ function App() {
                 checked={qtype === "Support Request"}
                 // onChange={(e) => setQtype(e.target.value)}
                 onChange={(e) => handleInputChange(e, "qtype")}
-                className="form-radio h-4 w-4 text-green-500"
+                className="form-radio h-4 w-4 text-green-500 accent-green-600"
               />
             </div>
           </div>
@@ -340,7 +340,7 @@ function App() {
           <label className="flex items-center ">
             <input
               className="mr-2 focus:ring-1
-               focus:ring-green-200 focus:border-green-500 hover:border-green-500 appearance  "
+               focus:ring-green-200 focus:border-green-500 hover:border-green-500 appearance accent-green-600  "
               type="checkbox"
               name="check"
               value="Begin Contacted"
@@ -363,7 +363,7 @@ function App() {
           value="Send"
           className="my-6 p-3  w-full  text-white   
                    rounded-lg border-green-600  
-                    bg-green-800 hover:scale-105"
+                    bg-green-600 hover:scale-105"
         >
           Submit
         </button>
