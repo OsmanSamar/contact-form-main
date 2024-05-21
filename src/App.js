@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AnimatedCursor from "react-animated-cursor";
 import { emailValidation } from "./Validation";
 import { FaCheckCircle } from "react-icons/fa";
 
@@ -152,6 +153,16 @@ function App() {
 
   return (
     <div className="py-2 my-4 px-6 mx-5 font-Karla rounded-md  bg-white  md:mx-auto max-w-screen-sm md:my-32 md:px-10">
+      <AnimatedCursor
+        innerSize={8}
+        outerSize={10}
+        // RGB
+        color="34, 211, 153"
+        outerAlpha={0.2}
+        innerScale={0.7}
+        outerScale={5}
+      />
+
       <h2 className="mt-6 mb-4 text-3xl font-Karla text-left text-green-900">
         Contact Us
       </h2>
@@ -314,14 +325,16 @@ function App() {
           >
             Message<span class="text-green-500 ml-1">*</span>
           </label>
+          {/* Use resize-y to make an element vertically resizable. */}
           <textarea
-            rows="6"
+            // rows="6"
             name="message"
             value={message}
             // onChange={(e) => setMessage(e.target.value)}
             onChange={(e) => handleInputChange(e, "message")}
             className={`bg-gray-50 text-gray-900 text-md cursor-pointer block w-full p-2.5
-             px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 focus:border-green-500 hover:border-green-500 outline-none
+             px-4 py-2 border rounded-lg focus:ring-1 focus:ring-green-200 caret-green-500 resize-y
+              hover:border-green-500 outline-none
               ${
                 formSubmitted && errorMessage.message
                   ? "border-red-500"
